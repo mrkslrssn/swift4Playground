@@ -284,6 +284,25 @@ let string = """
 
 // Generic subscripts
 
+struct GenericDictionary<Key: Hashable, Value> {
+    private var data: [Key: Value]
 
+    init(data: [Key: Value]) {
+        self.data = data
+    }
+
+    subscript<T>(key: Key) -> T? {
+        return data[key] as? T
+    }
+}
+
+// Dictionary of type: [String: Any]
+var earthData = GenericDictionary(data: ["name": "Stockholm", "population": 2287950])
+
+// Infers return type without need for as? String
+let name: String? = earthData["name"] // -> String
+
+// Infers return type without need for as? Int
+let population: Int? = earthData["population"] // -> Int
 
 
