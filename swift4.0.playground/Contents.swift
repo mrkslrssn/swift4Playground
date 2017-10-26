@@ -245,3 +245,45 @@ let string = """
     Learn about the new String and improved generics, see how Swift 4 maintains support for your existing Swift 3 code,
     and get insight into where Swift is headed in the future."
     """
+
+// Generic features
+
+/*
+ Added associatedtype constraints:
+
+ // Example Swift 3 Sequence
+
+ protocol Sequence {
+     associatedtype Iterator: IteratorProtocol
+
+     func makeIterator() -> Iterator
+ }
+
+ protocol IteratorProtocol {
+     associatedtype Element
+
+     mutating func next() -> Element?
+ }
+
+ // Example Swift 4 Sequence
+
+ protocol Sequence {
+     associatedtype Element
+     associatedtype Iterator: IteratorProtocol where Iterator.Element == Element
+
+     func makeIterator() -> Iterator
+ }
+
+ protocol IteratorProtocol {
+     associatedtype Element
+
+     mutating func next() -> Element?
+ }
+
+ */
+
+// Generic subscripts
+
+
+
+
