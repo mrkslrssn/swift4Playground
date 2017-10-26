@@ -118,8 +118,8 @@ anotherClass.delegate = SomeSubclass2()
  Swift 4 source compatibility, mostly Swift 3 compatible mostly refinements and SDK improvements.
  Additive features that extends the existing syntax.
 
- Swift 3.2 is a compilation mode of the Swift 4 compiler (Not a separate toolchain)
- It emulates Swift 3 for the Swift 4 compiler for a smother migration. This makes Swift 3 projects build and run without issues on the Swift 4 compiler.
+ Swift 3.2 is a compilation mode of the Swift 4 compiler (not a separate toolchain)
+ It emulates Swift 3 for the Swift 4 compiler for a smoother migration. This makes Swift 3 projects build and run without issues on the Swift 4 compiler.
 
  Swift 3.2 and Swift 4 can co-exists in the same application, the language is set on target level. So app target can be migrated without the need for migrate all dependecies and frameworks in order and at the same time.
  */
