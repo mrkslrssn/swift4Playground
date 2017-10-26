@@ -143,3 +143,105 @@ anotherClass.delegate = SomeSubclass2()
 class SomeNSObjectClass: NSObject {
     func print() { /* ... */ } // -> Swift 3, automatically infers @objc func print() <- [SomeClass print] in this case as it derives from NSObject, but if only called within Swift is directly and the Thunk func will remain unused. In Swift 4 @objc is only inferred when its absolutly needed such as overriding Objective-C method or conforming to Objective-C protocol
 }
+
+
+// Strings
+
+/*
+ # Ruby
+
+ one = "\u{E9}"         // -> é
+ two = "\u{65}\u{301}"  // -> é
+
+ one.length // -> 1
+ two.length // -> 2
+
+ one == two // -> false
+
+ Strict Swift takes a different approach, a Character is a grapheme.
+
+ twoCodeUnits.count // -> 1
+ oneCodeUnit == twoCodeUnits // true
+
+ */
+
+var family = "👩"
+family += "\u{200D}👩"
+family += "\u{200D}👧"
+family += "\u{200D}👦"
+
+family.count // -> 1 before 6
+
+
+
+// Swift 3 strings had a collection of characters, which was a bit messy.
+
+/*
+let values = "one,two,three..."
+var i = values.characters.startIndex
+
+while let comma = values.characters[i..<values.characters.endIndex].index(of: ",") {
+    if values.characters[i..<comma] == "two" {
+        print("found it!")
+    }
+    i = values.characters.index(after: comma)
+}
+*/
+
+//  In Swift 4 strings are an collection of characters.
+
+/*
+let values = "one,two,three..."
+var i = values.startIndex
+while let comma = values[i..<values.endIndex].index(of: ",") {
+    if values[i..<comma] == "two" {
+        print("found it!")
+    }
+    i = values.index(after: comma)
+}
+*/
+
+// One sided ranges are also introduced, the above can now be written like:
+
+let values = "one,two,three..."
+var i = values.startIndex
+while let comma = values[i...].index(of: ",") {
+    if values[i..<comma] == "two" {
+        print("found it!")
+    }
+    i = values.index(after: comma)
+}
+
+// In Swift 4 its now possible to access the underlaying scalar Character has a unicodeScalars
+
+// Using String as a Collection
+
+extension Unicode.Scalar {
+    var isRegionalIndicator: Bool {
+        return ("🇦"..."🇿").contains(self)
+    }
+}
+
+extension Character {
+    var isFlag: Bool {
+        let scalars = self.unicodeScalars
+        return scalars.count == 2
+            && scalars.first!.isRegionalIndicator
+            && scalars.last!.isRegionalIndicator
+    }
+}
+
+let str = "Good luck 🇹🇼 in the game tonight!"
+
+str.contains { $0.isFlag } // -> true
+let flags = str.filter { $0.isFlag }
+print(flags) // -> "🇹🇼"
+flags.count // -> 1
+
+// Multi-line String Literals
+
+let string = """
+    Swift 4 continues the evolution of the safe, fast, and expressive language, with better performance and new features.
+    Learn about the new String and improved generics, see how Swift 4 maintains support for your existing Swift 3 code,
+    and get insight into where Swift is headed in the future."
+    """
